@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Path AI - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    
+    <div class="sidebar">
+        <div>
+            <div class="logo-container">
+                <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+            <ul class="nav-links">
+                <li class="active-page"><a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="assessment.html"><i class="fa-solid fa-file-contract"></i> Assessment</a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </div>
+        <a href="#" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search for skills...">
+            </div>
+            <div class="user-icon">User</div>
+        </div>
+
+        <div class="home-grid">
+            <div class="left-col">
+                <div class="welcome-section">
+                    <div class="stat-card">
+                        <h3>Welcome, [Student Name]!</h3>
+                        <p>to bridge to skills gap?</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>My Skill Level</h4>
+                        <div style="width: 80px; height: 40px; border-top-left-radius: 90px; border-top-right-radius: 90px; border: 10px solid #4CC9F0; border-bottom: 0; margin: 10px 0;"></div>
+                        <small>Intermediate</small>
+                    </div>
+                    <div class="stat-card demand">
+                        <h4>Demand Match</h4>
+                        <h1>65%</h1>
+                        <small>vs. target career</small>
+                    </div>
+                </div>
+
+                <button class="btn-primary" style="margin-bottom: 20px;">Start Career Assessment</button>
+
+                <h3>Latest Recommendations</h3>
+                <div class="rec-list mt-20">
+                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Learn Python Data Analysis</div>
+                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Master Cloud Data Analysis</div>
+                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Master Cloud Computing Fundamentals</div>
+                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Improve Public Speaking</div>
+                </div>
+            </div>
+
+            <div class="right-col">
+                <div class="card">
+                    <h3>Career Progress Chart</h3>
+                    <canvas id="careerProgressChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
