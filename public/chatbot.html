@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Assessment - AI Chatbot</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div>
+        <div class="logo-container">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+        <ul class="nav-links">
+          <li>
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+          </li>
+          <li class="active-page">
+            <a href="assessment.html" class="active"
+              ><i class="fa-solid fa-file-contract"></i> Assessment</a
+            >
+          </li>
+          <li>
+            <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+          </li>
+          <li>
+            <a href="about.html"
+              ><i class="fa-solid fa-circle-info"></i> About</a
+            >
+          </li>
+          <li>
+            <a href="settings.html"
+              ><i class="fa-solid fa-gear"></i> Settings</a
+            >
+          </li>
+        </ul>
+      </div>
+      <a href="#" class="logout-link"
+        ><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a
+      >
+    </div>
+
+    <div class="main-content">
+      <div class="top-bar">
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search for skills..." />
+        </div>
+        <div class="user-icon user-name-display">User</div>
+      </div>
+
+      <div class="tabs-container">
+        <button class="tab-btn" onclick="location.href='assessment.html'">
+          1. Demand Report
+        </button>
+        <button class="tab-btn active" onclick="location.href='chatbot.html'">
+          2. AI Chatbot
+        </button>
+        <button class="tab-btn" onclick="location.href='saved_plans.html'">
+          3. Saved Plans
+        </button>
+      </div>
+
+      <h3>Chat with AI Bot</h3>
+      <div class="chat-window">
+        <div class="chat-messages" id="chatHistory">
+          <div class="msg ai">
+            <i class="fa-solid fa-robot"></i> Hello! I'm your Career AI. Upload
+            your resume in the Demand Report tab, or ask me any career questions
+            here!
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Ask AI..."
+            onkeypress="handleChatKey(event)"
+          />
+          <button
+            class="btn-primary"
+            onclick="sendChatMessage()"
+            style="
+              width: auto;
+              border-radius: 50%;
+              width: 40px;
+              height: 40px;
+              padding: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
