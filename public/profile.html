@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <div class="logo-container"><i class="fa-solid fa-user"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="assessment.html"><i class="fa-solid fa-file-contract"></i> Assessment</a></li>
+                <li class="active-page"><a href="profile.html" class="active"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </div>
+        <a href="#" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h2>My Profile & Career Goals</h2>
+            <div class="user-icon user-name-display">User</div>
+        </div>
+
+        <div class="profile-layout">
+            <div class="profile-pic-card">
+                <h3>Profile Card</h3>
+                <div class="avatar-circle">
+                    User
+                </div>
+                <div style="width: 100%; font-size: 0.9rem; margin-bottom: 20px; text-align: center;">
+                    <p class="user-name-display" style="font-weight: bold; font-size: 1.2rem;">Student Name</p>
+                    <p>student@uni.edu</p>
+                </div>
+                
+                <input type="file" id="photoInput" style="display: none;" accept="image/*" onchange="uploadPhoto(this)">
+                <button class="btn-primary" style="background: #C4C4C4; color: black;" onclick="document.getElementById('photoInput').click()">
+                    Update Profile Photo
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>Personal Information</h3>
+                <form onsubmit="event.preventDefault(); saveProfile();">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="inputName" class="form-control" placeholder="Enter Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" id="inputEmail" class="form-control" placeholder="Enter Email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Target Role</label>
+                        <input type="text" id="inputRole" class="form-control" placeholder="e.g. Junior Developer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>University / Institution</label>
+                        <input type="text" class="form-control" placeholder="University Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Long-term Career Goal</label>
+                        <textarea class="form-control" placeholder="Describe Your Long-Term Goal..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="background: #3A0CA3;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
