@@ -1,4 +1,3 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
@@ -21,10 +20,10 @@ const upload = multer({ dest: "uploads/" });
 
 // Configure Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); // Updated to a stable version
 
 // ----------------------------------------------------
-// API 1: Resume Analysis (The Core Feature)
+// API 1: Resume Analysis
 // ----------------------------------------------------
 app.post("/api/analyze-resume", upload.single("resume"), async (req, res) => {
   try {
@@ -37,12 +36,14 @@ app.post("/api/analyze-resume", upload.single("resume"), async (req, res) => {
     const pdfData = await pdf(dataBuffer);
     const resumeText = pdfData.text;
 
+    // Get current date for trend analysis grounding
+    const currentDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+
     // 2. Prepare Prompt for Gemini
-    // We ask for JSON format so our Frontend Graphs can read it
     const prompt = `
             You are an expert Career Counselor and AI Data Analyst. 
             Analyze the following resume text for a candidate aiming for a Junior Developer/Tech role.
-            Check current industry trends (2025-2026) for skills demand.
+            The current date is ${currentDate}. Base your trend analysis on demand for 2025-2026.
 
             Resume Text: "${resumeText.substring(0, 8000)}"
 
@@ -76,30 +77,46 @@ app.post("/api/analyze-resume", upload.single("resume"), async (req, res) => {
     res.json(jsonResponse);
   } catch (error) {
     console.error("Error:", error);
+    if (req.file) fs.unlinkSync(req.file.path);
     res.status(500).json({ error: "Analysis failed" });
   }
 });
 
 // ----------------------------------------------------
-// API 2: Chatbot (Interactive)
+// API 2: Chatbot (Updated for Correct Date/Time)
 // ----------------------------------------------------
 app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body;
+
+    // Get live server date and time
+    const now = new Date();
+    const fullDate = now.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    // Initialize chat with current context
     const chat = model.startChat({
       history: [
         {
           role: "user",
           parts: [
             {
-              text: "You are a helpful career mentor AI. Keep answers concise.",
+              text: `You are a helpful career mentor AI. 
+                     Today is ${fullDate} and the current time is ${time}. 
+                     Always use this information if the user asks for the date, day, or time.
+                     Keep answers concise.`,
             },
           ],
         },
         {
           role: "model",
           parts: [
-            { text: "Understood. I am ready to help with career advice." },
+            { text: `Understood. I am grounded in the current date: ${fullDate}. I am ready to help with career advice.` },
           ],
         },
       ],
