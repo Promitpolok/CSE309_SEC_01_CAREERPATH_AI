@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assessment - Demand Report</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <div class="logo-container"><i class="fa-solid fa-clipboard-list"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li class="active-page"><a href="assessment.html" class="active"><i class="fa-solid fa-file-contract"></i> Assessment</a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </div>
+        <a href="#" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search for skills...">
+            </div>
+            <div class="user-icon user-name-display">User</div>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="location.href='assessment.html'">1. Demand Report</button>
+            <button class="tab-btn" onclick="location.href='chatbot.html'">2. AI Chatbot</button>
+            <button class="tab-btn" onclick="location.href='saved_plans.html'">3. Saved Plans</button>
+        </div>
+
+        <div class="assessment-layout">
+            <div class="left-panel">
+                <h3>Skill Input & Analysis</h3>
+                <div class="upload-area">
+                    <div style="padding: 20px;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 40px; color: #666; margin-bottom: 10px;"></i>
+                        <p>Upload Resume (PDF)</p>
+                        <input type="file" id="resumeUpload" accept=".pdf" style="margin-top: 10px;">
+                    </div>
+                </div>
+                <p id="uploadStatus" style="font-size: 0.9rem; color: #555; margin-bottom: 20px;">The AI will analyze your PDF against real-time industry demand.</p>
+                <button id="analyzeBtn" class="btn-primary" onclick="analyzeResume()">Run AI Analysis</button>
+            </div>
+
+            <div class="right-panel">
+                <div class="card" style="background-color: #F0F8FF;">
+                    <h3 style="text-align: center;">Skill Competency Breakdown</h3>
+                    <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
+                        <div style="width: 150px;">
+                            <canvas id="softSkillsChart"></canvas>
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <h4>Soft Skills</h4>
+                            <p>Match Score: <span id="matchScoreDisplay">0%</span></p>
+                        </div>
+                    </div>
+                    <p style="text-align: center; font-size: 0.9rem;">Current Skills vs. Projected Demand</p>
+                    <canvas id="techSkillsChart" height="150"></canvas>
+                </div>
+
+                <h3>AI Recommendations</h3>
+                <div id="aiRecommendations" class="rec-list mt-20">
+                    <div class="rec-item">Upload a resume to see recommendations.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
