@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assessment - Saved Plans</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <div class="logo-container"><i class="fa-solid fa-clipboard-list"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li class="active-page"><a href="assessment.html" class="active"><i class="fa-solid fa-file-contract"></i> Assessment</a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+        </div>
+        <a href="#" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h2 style="flex-grow: 1;">Saved Plans & Goals</h2>
+            <div class="user-icon">User</div>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-btn" onclick="location.href='assessment.html'">1. Demand Report</button>
+            <button class="tab-btn" onclick="location.href='chatbot.html'">2. AI Chatbot</button>
+            <button class="tab-btn active" onclick="location.href='saved_plans.html'">3. Saved Plans</button>
+        </div>
+
+        <h3>Active Learning Paths</h3>
+        <div class="plans-grid">
+            <div class="plan-card">
+                <h4>Active Learning Paths</h4>
+                <p>40% Complete</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <button style="background: #A1887F; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">View Details</button>
+            </div>
+            <div class="plan-card">
+                <h4>Data Analyst Fundamentals</h4>
+                <p>Needs Assessment</p>
+                <br>
+                <button style="background: #A1887F; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">View Details</button>
+            </div>
+        </div>
+
+        <h3>Previous Assessment Results</h3>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Focus/Input Summary</th>
+                    <th>Demand Match Score</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Dec 26, 2025</td>
+                    <td>Resume Analysis</td>
+                    <td>65%</td>
+                    <td>View Full Report</td>
+                </tr>
+                <tr>
+                    <td>Jan 2, 2026</td>
+                    <td>Portfolio</td>
+                    <td>58%</td>
+                    <td>View Full Report</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Custom Milestones</h3>
+        <div class="card" style="background: #E0E0E0;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span><i class="fa-regular fa-square-check"></i> Complete Python Course</span>
+                <span class="text-purple">Completed</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span><i class="fa-regular fa-square"></i> Build Personal Website</span>
+                <span>Due: Dec 31, 2025</span>
+            </div>
+            <button style="margin-top: 15px; background: var(--active-purple); color: white; border:none; padding: 5px 10px; border-radius: 5px;">+ Add New Goal</button>
+        </div>
+    </div>
+</body>
+</html>
