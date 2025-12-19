@@ -4,6 +4,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   loadProfileData();
   setupNavigation();
+  // New: If we are on the home page, load the dashboard stats and chart
+  if (document.getElementById('studentName')) {
+    updateDashboardFromStorage();
+  }
 });
 
 function loadProfileData() {
@@ -15,6 +19,14 @@ function loadProfileData() {
   // Update Sidebar & Topbar
   const nameElements = document.querySelectorAll(".user-name-display");
   nameElements.forEach((el) => (el.textContent = name));
+
+  // Update Home Page Welcome Text
+  const welcomeName = document.getElementById("studentName");
+  if (welcomeName) welcomeName.textContent = name;
+
+  // Update Top Bar User Icon
+  const topBarUser = document.getElementById("topBarUser");
+  if (topBarUser) topBarUser.textContent = name.split(' ')[0];
 
   if (photo) {
     const photoElements = document.querySelectorAll(
@@ -38,30 +50,99 @@ function loadProfileData() {
 
 function saveProfile() {
   const name = document.getElementById("inputName").value;
-  const email = document.getElementById("inputEmail").value;
   const role = document.getElementById("inputRole").value;
-
+  const emailInput = document.getElementById("inputEmail");
+  
   localStorage.setItem("userName", name);
-  localStorage.setItem("userEmail", email);
   localStorage.setItem("userRole", role);
+  if (emailInput) localStorage.setItem("userEmail", emailInput.value);
 
   alert("Profile Saved Successfully!");
   loadProfileData(); // Refresh UI
 }
 
-// Handle Photo Upload
 function uploadPhoto(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      localStorage.setItem("userPhoto", e.target.result); // Save Base64 to Storage
+      localStorage.setItem("userPhoto", e.target.result); 
       loadProfileData();
     };
     reader.readAsDataURL(input.files[0]);
   }
 }
 
-// --- 2. Assessment Page: AI Resume Analysis ---
+// --- 2. Dashboard Logic (Home Page Updates & Charts) ---
+function updateDashboardFromStorage() {
+  const storedData = localStorage.getItem("resumeAnalysis");
+  if (!storedData) return;
+
+  const data = JSON.parse(storedData);
+
+  // Update Demand Match Text
+  const demandMatch = document.getElementById("demandMatchValue");
+  if (demandMatch) demandMatch.innerText = data.matchScore + "%";
+
+  // Update Skill Level Gauge & Text
+  const skillText = document.getElementById("skillText");
+  const skillGauge = document.getElementById("skillGauge");
+  if (skillText && skillGauge) {
+    let level = "Beginner";
+    let color = "#ef4444"; // Red
+    if (data.matchScore > 75) { level = "Expert"; color = "#4361EE"; }
+    else if (data.matchScore > 45) { level = "Intermediate"; color = "#4CC9F0"; }
+    
+    skillText.innerText = level;
+    skillGauge.style.borderColor = color;
+  }
+
+  // Update Home Recommendations
+  const homeRecList = document.getElementById("recommendationList");
+  if (homeRecList && data.recommendations) {
+    homeRecList.innerHTML = data.recommendations
+      .map(rec => `<div class="rec-item"><i class="fa-regular fa-lightbulb"></i> ${rec}</div>`)
+      .join('');
+  }
+
+  // --- NEW: Update Career Progress Chart on Home Page ---
+  const ctxProgress = document.getElementById("careerProgressChart");
+  if (ctxProgress) {
+    // Destroy previous instance to avoid hover glitches
+    if (window.homeProgressChartInstance) window.homeProgressChartInstance.destroy();
+
+    window.homeProgressChartInstance = new Chart(ctxProgress, {
+      type: 'line',
+      data: {
+        labels: ['Starting Point', 'Latest Analysis'],
+        datasets: [{
+          label: 'Career Readiness %',
+          data: [0, data.matchScore], 
+          borderColor: '#4361EE',
+          backgroundColor: 'rgba(67, 97, 238, 0.1)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 6,
+          pointBackgroundColor: '#4361EE'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { 
+            beginAtZero: true, 
+            max: 100,
+            ticks: { callback: value => value + '%' }
+          }
+        }
+      }
+    });
+  }
+}
+
+// --- 3. Assessment Page: AI Resume Analysis ---
 async function analyzeResume() {
   const fileInput = document.getElementById("resumeUpload");
   const statusText = document.getElementById("uploadStatus");
@@ -72,10 +153,8 @@ async function analyzeResume() {
     return;
   }
 
-  // UI Loading State
-  statusText.innerText = "Uploading & Analyzing... (This uses AI)";
+  statusText.innerText = "Analyzing Resume with AI...";
   btn.disabled = true;
-  btn.style.backgroundColor = "#ccc";
 
   const formData = new FormData();
   formData.append("resume", fileInput.files[0]);
@@ -87,13 +166,13 @@ async function analyzeResume() {
     });
 
     const data = await response.json();
-
     if (data.error) throw new Error(data.error);
 
-    // Success! Update UI with Real AI Data
+    // Save results for the Home page to use
+    localStorage.setItem("resumeAnalysis", JSON.stringify(data));
+
     statusText.innerText = "Analysis Complete!";
     btn.disabled = false;
-    btn.style.backgroundColor = "#3A0CA3";
 
     updateAssessmentUI(data);
   } catch (error) {
@@ -104,18 +183,19 @@ async function analyzeResume() {
 }
 
 function updateAssessmentUI(data) {
-  // 1. Update Match Score
-  document.getElementById("matchScoreDisplay").innerText =
-    data.matchScore + "%";
+  // Update Match Score on Assessment Page
+  const matchDisplay = document.getElementById("matchScoreDisplay");
+  if (matchDisplay) matchDisplay.innerText = data.matchScore + "%";
 
-  // 2. Update Recommendations List
+  // Update Recommendations on Assessment Page
   const recList = document.getElementById("aiRecommendations");
-  recList.innerHTML = ""; // Clear old
-  data.recommendations.forEach((rec) => {
-    recList.innerHTML += `<div class="rec-item"><i class="fa-regular fa-lightbulb"></i> ${rec}</div>`;
-  });
+  if (recList) {
+    recList.innerHTML = data.recommendations
+      .map(rec => `<div class="rec-item"><i class="fa-regular fa-lightbulb"></i> ${rec}</div>`)
+      .join('');
+  }
 
-  // 3. Update Soft Skills Chart
+  // Soft Skills Chart (Assessment Page)
   if (window.softSkillsChartInstance) window.softSkillsChartInstance.destroy();
   const ctxDonut = document.getElementById("softSkillsChart");
   if (ctxDonut) {
@@ -123,41 +203,27 @@ function updateAssessmentUI(data) {
       type: "doughnut",
       data: {
         labels: ["Match", "Gap"],
-        datasets: [
-          {
-            data: [data.softSkills.match, data.softSkills.gap],
-            backgroundColor: ["#2E0249", "#81C784"],
-            borderWidth: 0,
-          },
-        ],
+        datasets: [{
+          data: [data.softSkills.match, data.softSkills.gap],
+          backgroundColor: ["#2E0249", "#81C784"],
+          borderWidth: 0,
+        }],
       },
       options: { cutout: "60%", plugins: { legend: { display: false } } },
     });
   }
 
-  // 4. Update Tech Skills Chart
+  // Tech Skills Chart (Assessment Page)
   if (window.techSkillsChartInstance) window.techSkillsChartInstance.destroy();
   const ctxBar = document.getElementById("techSkillsChart");
   if (ctxBar) {
-    const labels = data.techSkills.map((s) => s.name);
-    const currentData = data.techSkills.map((s) => s.current);
-    const demandData = data.techSkills.map((s) => s.demand);
-
     window.techSkillsChartInstance = new Chart(ctxBar, {
       type: "bar",
       data: {
-        labels: labels,
+        labels: data.techSkills.map(s => s.name),
         datasets: [
-          {
-            label: "Your Skill",
-            data: currentData,
-            backgroundColor: "#1E88E5",
-          },
-          {
-            label: "Market Demand",
-            data: demandData,
-            backgroundColor: "#BDBDBD",
-          },
+          { label: "Your Skill", data: data.techSkills.map(s => s.current), backgroundColor: "#4CC9F0" },
+          { label: "Market Demand", data: data.techSkills.map(s => s.demand), backgroundColor: "#BDBDBD" }
         ],
       },
       options: { indexAxis: "y", responsive: true },
@@ -165,7 +231,7 @@ function updateAssessmentUI(data) {
   }
 }
 
-// --- 3. Chatbot Page: AI Chat ---
+// --- 4. Chatbot Page: AI Chat ---
 async function sendChatMessage() {
   const input = document.getElementById("chatInput");
   const msgArea = document.getElementById("chatHistory");
@@ -173,15 +239,10 @@ async function sendChatMessage() {
 
   if (!userText.trim()) return;
 
-  // Add User Message to UI
-  msgArea.innerHTML += `
-        <div class="msg user">
-            ${userText}
-        </div>`;
+  msgArea.innerHTML += `<div class="msg user">${userText}</div>`;
   input.value = "";
-  msgArea.scrollTop = msgArea.scrollHeight; // Scroll to bottom
+  msgArea.scrollTop = msgArea.scrollHeight;
 
-  // Show Typing Indicator
   const typingId = "typing-" + Date.now();
   msgArea.innerHTML += `<div id="${typingId}" class="msg ai">Thinking...</div>`;
 
@@ -193,28 +254,20 @@ async function sendChatMessage() {
     });
 
     const data = await response.json();
-
-    // Remove typing indicator and add real response
     document.getElementById(typingId).remove();
-    msgArea.innerHTML += `
-            <div class="msg ai">
-                <i class="fa-solid fa-robot"></i> ${data.reply}
-            </div>`;
+    msgArea.innerHTML += `<div class="msg ai"><i class="fa-solid fa-robot"></i> ${data.reply}</div>`;
     msgArea.scrollTop = msgArea.scrollHeight;
   } catch (error) {
-    console.error(error);
     document.getElementById(typingId).innerText = "Error connecting to AI.";
   }
 }
 
-// Allow Enter key to send
 function handleChatKey(event) {
   if (event.key === "Enter") sendChatMessage();
 }
 
 function setupNavigation() {
-  // Helper to highlight sidebar
-  const path = window.location.pathname.split("/").pop();
+  const path = window.location.pathname.split("/").pop() || "index.html";
   const links = document.querySelectorAll(".nav-links a");
   links.forEach((link) => {
     if (link.getAttribute("href") === path) {

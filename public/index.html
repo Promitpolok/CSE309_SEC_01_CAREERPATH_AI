@@ -13,7 +13,7 @@
     <div class="sidebar">
         <div>
             <div class="logo-container">
-                <i class="fa-solid fa-clipboard-list"></i>
+                <i class="fa-solid fa-house"></i>
             </div>
             <ul class="nav-links">
                 <li class="active-page"><a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
@@ -32,36 +32,33 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Search for skills...">
             </div>
-            <div class="user-icon">User</div>
+            <div class="user-icon" id="topBarUser">User</div>
         </div>
 
         <div class="home-grid">
             <div class="left-col">
                 <div class="welcome-section">
                     <div class="stat-card">
-                        <h3>Welcome, [Student Name]!</h3>
+                        <h3>Welcome, <span id="studentName">Student</span>!</h3>
                         <p>to bridge to skills gap?</p>
                     </div>
                     <div class="stat-card">
                         <h4>My Skill Level</h4>
-                        <div style="width: 80px; height: 40px; border-top-left-radius: 90px; border-top-right-radius: 90px; border: 10px solid #4CC9F0; border-bottom: 0; margin: 10px 0;"></div>
-                        <small>Intermediate</small>
+                        <div id="skillGauge" style="width: 80px; height: 40px; border-top-left-radius: 90px; border-top-right-radius: 90px; border: 10px solid #4CC9F0; border-bottom: 0; margin: 10px 0;"></div>
+                        <small id="skillText">Beginner</small>
                     </div>
                     <div class="stat-card demand">
                         <h4>Demand Match</h4>
-                        <h1>65%</h1>
+                        <h1 id="demandMatchValue">0%</h1>
                         <small>vs. target career</small>
                     </div>
                 </div>
 
-                <button class="btn-primary" style="margin-bottom: 20px;">Start Career Assessment</button>
+                <button class="btn-primary" style="margin-bottom: 20px;" onclick="window.location.href='assessment.html'">Start Career Assessment</button>
 
                 <h3>Latest Recommendations</h3>
-                <div class="rec-list mt-20">
-                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Learn Python Data Analysis</div>
-                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Master Cloud Data Analysis</div>
-                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Master Cloud Computing Fundamentals</div>
-                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Improve Public Speaking</div>
+                <div class="rec-list mt-20" id="recommendationList">
+                    <div class="rec-item"><i class="fa-regular fa-lightbulb"></i> Upload resume to see recommendations</div>
                 </div>
             </div>
 
